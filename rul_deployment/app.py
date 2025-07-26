@@ -1,7 +1,6 @@
 import os
 import streamlit as st
 import numpy as np
-import pandas as pd
 from keras.models import load_model
 
 # Load model
@@ -13,23 +12,28 @@ def load_lstm_model():
 model = load_lstm_model()
 
 # UI
-st.title("Predictive Maintenance: RUL Prediction")
-st.write("Enter sensor readings to predict Remaining Useful Life (RUL).")
+st.title("🔧 Predictive Maintenance: RUL Estimator")
+st.markdown("Enter **14 sensor readings** to predict the Remaining Useful Life (RUL) of a machine.")
 
-# Input form
-sensor1 = st.number_input("Sensor 1 reading", value=0.0)
-sensor2 = st.number_input("Sensor 2 reading", value=0.0)
-sensor3 = st.number_input("Sensor 3 reading", value=0.0)
-# Add more sensors based on your model's input features
+# Input: 14 sensor readings
+st.subheader("📥 Sensor Inputs")
+sensor_inputs = []
 
-if st.button("Predict RUL"):
+cols = st.columns(2)
+for i in range(14):
+    col = cols[i % 2]  # Alternate between 2 columns
+    sensor_value = col.number_input(f"Sensor {i + 1}", value=0.0, step=0.1, format="%.2f")
+    sensor_inputs.append(sensor_value)
+
+# Predict button
+if st.button("🔮 Predict RUL"):
     try:
-        # Prepare input (adjust shape as needed for your model)
-        input_data = np.array([[sensor1, sensor2, sensor3]])  # shape (1, timesteps, features)
-        input_data = input_data.reshape((1, input_data.shape[1], 1))  # Modify based on model's expected input
-
+        # Prepare input
+        input_data = np.array(sensor_inputs).reshape(1, 1, 14)  # (1 sample, 1 timestep, 14 features)
+        
         # Predict
         prediction = model.predict(input_data)
-        st.success(f"Predicted RUL: {prediction[0][0]:.2f}")
+        st.success(f"🧠 Predicted Remaining Useful Life: **{prediction[0][0]:.2f} cycles**")
+    
     except Exception as e:
-        st.error(f"Error: {str(e)}")
+        st.error(f"⚠️ Error: {str(e)}")
