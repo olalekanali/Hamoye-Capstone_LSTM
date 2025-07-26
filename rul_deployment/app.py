@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model
 # Load model
 @st.cache_resource
 def load_lstm_model():
-    return load_model("lstm_model.h5")
+    return load_model("lstm_rul_model.h5")
 
 model = load_lstm_model()
 
