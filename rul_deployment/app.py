@@ -2,13 +2,13 @@ import os
 import streamlit as st
 import numpy as np
 import pandas as pd
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 # Load model
 @st.cache_resource
 def load_lstm_model():
     model_path = os.path.join(os.path.dirname(__file__), "lstm_rul_model.h5")
-    return load_model(model_path)
+    return load_model(model_path, compile=False)
 
 model = load_lstm_model()
 
