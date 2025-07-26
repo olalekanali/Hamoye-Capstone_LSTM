@@ -12,11 +12,11 @@ def load_lstm_model():
 model = load_lstm_model()
 
 # UI
-st.title("🔧 Predictive Maintenance: RUL Estimator")
+st.title("Predictive Maintenance: RUL Prediction")
 st.markdown("Enter **14 sensor readings** to predict the Remaining Useful Life (RUL) of a machine.")
 
 # Input: 14 sensor readings
-st.subheader("📥 Sensor Inputs")
+st.subheader("Sensor Readings")
 sensor_inputs = []
 
 cols = st.columns(2)
@@ -26,14 +26,14 @@ for i in range(14):
     sensor_inputs.append(sensor_value)
 
 # Predict button
-if st.button("🔮 Predict RUL"):
+if st.button("Predict RUL"):
     try:
         # Prepare input
         input_data = np.array(sensor_inputs).reshape(1, 1, 14)  # (1 sample, 1 timestep, 14 features)
         
         # Predict
         prediction = model.predict(input_data)
-        st.success(f"🧠 Predicted Remaining Useful Life: **{prediction[0][0]:.2f} cycles**")
+        st.success(f"Predicted Remaining Useful Life: **{prediction[0][0]:.2f} cycles**")
     
     except Exception as e:
         st.error(f"⚠️ Error: {str(e)}")
